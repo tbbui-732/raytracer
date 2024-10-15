@@ -9,6 +9,9 @@ int main(void) {
     std::cout << "P3\n" << image_width << ' ' << image_width << "\n255\n";
 
     for (int height = 0; height < image_height; ++height) {
+        // progress bar
+        std::clog << "\rScanlines remaining: " << (image_height - height) << ' ' << std::flush;
+
         for (int width = 0; width < image_width; ++width) {
             float r = double(width) / (image_width-1);
             float g = double(height) / (image_height-1);
