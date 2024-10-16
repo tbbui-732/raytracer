@@ -56,4 +56,6 @@ class vec3 {
         }
 };
 
+using point3 = vec3;
+
 #endif
