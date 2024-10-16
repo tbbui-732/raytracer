@@ -36,8 +36,5 @@
 *.out
 *.app
 
-# Image formats
-*.ppm
-
 # Output directories
 !output/
