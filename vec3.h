@@ -58,4 +58,58 @@ class vec3 {
 
 using point3 = vec3;
 
+//////////////////////////////
+// VECTOR UTILITY FUNCTIONS //
+//////////////////////////////
+
+inline std::ostream& operator<<(std::ostream& out, const vec3& v) { // example usage: std::cout << v << " is the vector." << std::endl;
+    return out << v.e[0] << ' ' << v.e[1] << ' ' << v.e[2];
+}
+
+inline vec3 operator+(const vec3& u, const vec3& v) {               // example: u + v
+    return vec3(u.e[0]+v.e[0], 
+            u.e[1]+v.e[1], 
+            u.e[2]+v.e[2]);
+}
+
+inline vec3 operator-(const vec3& u, const vec3& v) {               // example: u - v
+    return vec3(u.e[0]-v.e[0], 
+            u.e[1]-v.e[1], 
+            u.e[2]-v.e[2]);
+}
+
+inline vec3 operator*(const vec3& u, const vec3& v) {               // example: u * v
+    return vec3(u.e[0]*v.e[0], 
+            u.e[1]*v.e[1], 
+            u.e[2]*v.e[2]);
+}
+
+inline vec3 operator*(const int multiplier, const vec3& v) {        // example: 2 * vector
+    return vec3(multiplier*v.e[0], 
+            multiplier*v.e[1], 
+            multiplier*v.e[2]);
+}
+
+inline vec3 operator*(const vec3& vector, const int multiplier) {   // example: vector * 2
+    return multiplier * vector;
+}
+
+inline vec3 operator/(const vec3& vector, const int divisor) {      // example: vector * 2
+    return vector * (1 / divisor);
+}
+
+inline double dot(const vec3& u, const vec3& v) {                   // dot product
+    return (u.e[0] * v.e[0]) + (u.e[1] * v.e[1]) + (u.e[2] * v.e[2]);
+}
+
+inline vec3 cross(const vec3& u, const vec3& v) {                   // cross product
+    return vec3(u.e[1]*v.e[2] - u.e[2]*v.e[1],
+                u.e[2]*v.e[0] - u.e[0]*v.e[2],
+                u.e[0]*v.e[1] - u.e[1]*v.e[0]);
+}
+
+inline vec3 unit_vector(const vec3& v) {
+    return v / v.length();
+}
+
 #endif
