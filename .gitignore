@@ -36,5 +36,9 @@
 *.out
 *.app
 
-# Image formats
-*.ppm
+# Output directories
+!output/
+
+# Others
+.DS_Store
+*.txt
