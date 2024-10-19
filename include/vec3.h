@@ -37,14 +37,14 @@ class vec3 {
             return *this;
         }
 
-        vec3& operator*=(const int multiplier) {                                // multiplication assignment
+        vec3& operator*=(const float multiplier) {                                // multiplication assignment
             e[0] *= multiplier;
             e[1] *= multiplier;
             e[2] *= multiplier;
             return *this;
         }
 
-        vec3& operator/=(const int divisor) {                                   // division assignment
+        vec3& operator/=(const float divisor) {                                   // division assignment
             return (*this *= (1 / divisor));
         }
 
@@ -85,17 +85,17 @@ inline vec3 operator*(const vec3& u, const vec3& v) {                           
                 u.e[2]*v.e[2]);
 }
 
-inline vec3 operator*(const int multiplier, const vec3& v) {                    // example: 2 * vector
+inline vec3 operator*(const float multiplier, const vec3& v) {                    // example: 2 * vector
     return vec3(multiplier*v.e[0], 
                 multiplier*v.e[1], 
                 multiplier*v.e[2]);
 }
 
-inline vec3 operator*(const vec3& vector, const int multiplier) {               // example: vector * 2
+inline vec3 operator*(const vec3& vector, const float multiplier) {               // example: vector * 2
     return multiplier * vector;
 }
 
-inline vec3 operator/(const vec3& vector, const int divisor) {                  // example: vector * 2
+inline vec3 operator/(const vec3& vector, const float divisor) {                  // example: vector * 2
     return vector * (1 / divisor);
 }
 
