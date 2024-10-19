@@ -10,35 +10,36 @@ color ray_color(const ray& r) {                                                 
 }
 
 int main(void) {
-    auto aspect_ratio = 16.0 / 9.0;                                             // image dimensions
+    double aspect_ratio = 16.0 / 9.0;                                           // image dimensions
     int image_width = 400;
     int image_height = int(image_width / aspect_ratio);
     image_height = (image_height < 1) ? 1 : image_height;                       // ensure image_height is >= 1
 
-    auto viewport_height = 2.0;                                                 // camera/viewport dimensions
-    auto viewport_width = viewport_height *                                     // NOTE; arbitrary value
+    double viewport_height = 2.0;                                                 // camera/viewport dimensions
+    double viewport_width = viewport_height *                                     // NOTE; arbitrary value
                             ( double(image_width)/image_height );
-    auto focal_length = 1.0;
-    auto camera_center = point3(0, 0, 0);
+    double focal_length = 1.0;
+    point3 camera_center = point3(0, 0, 0);
 
-    auto viewport_u = vec3(viewport_width, 0, 0);                               // calculate vectors for horizontal and vertical viewport edges
-    auto viewport_v = vec3(0, -viewport_height, 0);
+    vec3 viewport_u = vec3(viewport_width, 0, 0);                               // calculate vectors for horizontal and vertical viewport edges
+    vec3 viewport_v = vec3(0, -viewport_height, 0);
 
-    auto pixel_delta_u = viewport_u / image_width;                              // calculate horizontal and vertical delta vectors
-    auto pixel_delta_v = viewport_v / image_height;
+    vec3 pixel_delta_u = viewport_u / image_width;                              // calculate horizontal and vertical delta vectors
+    vec3 pixel_delta_v = viewport_v / image_height;
 
-    auto viewport_upper_left = camera_center                                    // calculate location of upper left pixel
-                             - vec3(0, 0, focal_length)                         // move back focal_length
-                             - (viewport_u/2)                                   // move left by half the viewport
-                             - (viewport_v/2);                                  // move up by half the viewport
-    auto pixel00_loc = viewport_upper_left + 0.5                                // 0.5 for half a pixel's distance to ensure even pixel distancing
+    point3 viewport_upper_left = camera_center                                  // calculate location of upper left pixel
+                               - vec3(0, 0, focal_length)                       // move back focal_length
+                               - (viewport_u/2)                                 // move left by half the viewport
+                               - (viewport_v/2);                                // move up by half the viewport
+    vec3 pixel00_loc = viewport_upper_left + 0.5                                // 0.5 for half a pixel's distance to ensure even pixel distancing
                         * (pixel_delta_u + pixel_delta_v); 
 
    
     ////////////
     // RENDER //
     ////////////
-    std::cout << "P3\n" << image_width << ' ' << image_width << "\n255\n";
+    std::cout << "P3\n" << image_width << " " << image_height << "\n255\n";
+
 
     for (int height = 0; height < image_height; ++height) {
         std::clog << "\rScanlines remaining: "                                  // progress bar
