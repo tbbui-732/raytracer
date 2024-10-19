@@ -38,3 +38,6 @@
 
 # Output directories
 !output/
+
+# Others
+.DS_Store/
