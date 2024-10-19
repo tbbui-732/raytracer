@@ -18,17 +18,9 @@ class vec3 {
         double y() const { return e[1]; }
         double z() const { return e[2]; }
 
-        vec3 operator-() const {                                                // vector negation
-            return vec3(-e[0], -e[1], -e[2]); 
-        } 
-
-        double operator[](int i) const {                                        // copy of ith value
-            return e[i];
-        } 
-
-        double& operator[](int i) {                                             // reference of ith value
-            return e[i];
-        } 
+        vec3 operator-() const { return vec3(-e[0], -e[1], -e[2]); }            // vector negation
+        double operator[](int i) const { return e[i]; }                         // copy of ith value
+        double& operator[](int i) { return e[i]; }                              // reference of ith value
 
         vec3& operator+=(const vec3& newVec) {                                  // addition assignment
             e[0] += newVec.e[0];
@@ -37,14 +29,14 @@ class vec3 {
             return *this;
         }
 
-        vec3& operator*=(const float multiplier) {                                // multiplication assignment
+        vec3& operator*=(const double multiplier) {                             // multiplication assignment
             e[0] *= multiplier;
             e[1] *= multiplier;
             e[2] *= multiplier;
             return *this;
         }
 
-        vec3& operator/=(const float divisor) {                                   // division assignment
+        vec3& operator/=(const double divisor) {                                // division assignment
             return (*this *= (1 / divisor));
         }
 
@@ -85,17 +77,17 @@ inline vec3 operator*(const vec3& u, const vec3& v) {                           
                 u.e[2]*v.e[2]);
 }
 
-inline vec3 operator*(const float multiplier, const vec3& v) {                    // example: 2 * vector
+inline vec3 operator*(const double multiplier, const vec3& v) {                 // example: 2 * vector
     return vec3(multiplier*v.e[0], 
                 multiplier*v.e[1], 
                 multiplier*v.e[2]);
 }
 
-inline vec3 operator*(const vec3& vector, const float multiplier) {               // example: vector * 2
+inline vec3 operator*(const vec3& vector, const double multiplier) {            // example: vector * 2
     return multiplier * vector;
 }
 
-inline vec3 operator/(const vec3& vector, const float divisor) {                  // example: vector * 2
+inline vec3 operator/(const vec3& vector, const double divisor) {               // example: vector / 2
     return vector * (1 / divisor);
 }
 
