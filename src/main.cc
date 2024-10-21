@@ -4,7 +4,7 @@
 #include "../include/color.h"
 #include "../include/ray.h"
 
-double hit_sphere(const point3& center, double radius, const ray& r) {
+double hit_sphere(const point3& center, double radius, const ray& r) {          // RETURN: unit length vector
     // equation of sphere reduced to solve for t (discriminant)
     // if ray missed sphere, it yields a negative value
     vec3 oc = center - r.origin();
@@ -21,7 +21,7 @@ double hit_sphere(const point3& center, double radius, const ray& r) {
 }
 
 color ray_color(const ray& r) {                                                 // NOTE: creates an arbitrary blue to white gradient
-    // creates a red sphere
+    // creates a sphere
     auto t = hit_sphere(point3(0,0,-1), 0.5, r);
     if (t > 0.0) {
         vec3 N = unit_vector(r.at(t) - vec3(0,0,-1));
