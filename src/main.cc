@@ -1,31 +1,12 @@
-#include <cmath>
-#include <iostream>
-#include "../include/vec3.h"
-#include "../include/color.h"
-#include "../include/ray.h"
+#include "../include/rtweekend.h"
+#include "../include/hittable.h"
+#include "../include/hittable_list.h"
+#include "../include/sphere.h"
 
-double hit_sphere(const point3& center, double radius, const ray& r) {          // RETURN: unit length vector
-    // equation of sphere reduced to solve for t (discriminant)
-    // if ray missed sphere, it yields a negative value
-    vec3 oc = center - r.origin();
-    auto a = r.direction().length_squared();
-    auto h = dot(r.direction(), oc);
-    auto c = oc.length_squared() - radius*radius;
-    auto discriminant = h*h - a*c;
-
-    if (discriminant < 0) {
-        return -1.0;
-    } else {
-        return (h - std::sqrt(discriminant)) / a;
-    }
-}
-
-color ray_color(const ray& r) {                                                 // NOTE: creates an arbitrary blue to white gradient
-    // creates a sphere
-    auto t = hit_sphere(point3(0,0,-1), 0.5, r);
-    if (t > 0.0) {
-        vec3 N = unit_vector(r.at(t) - vec3(0,0,-1));
-        return 0.5 * color(N.x()+1, N.y()+1, N.z()+1);
+color ray_color(const ray& r, const hittable& world) {                          // NOTE: creates an arbitrary blue to white gradient
+    hit_record rec;
+    if (world.hit(r, 0, infinity, rec)) {
+        return 0.5 * (rec.normal + color(1,1,1));
     }
 
     vec3 unit_direction = unit_vector(r.direction());
@@ -38,6 +19,10 @@ int main(void) {
     int image_width = 400;
     int image_height = int(image_width / aspect_ratio);
     image_height = (image_height < 1) ? 1 : image_height;                       // ensure image_height is >= 1
+
+    hittable_list world;                                                        // world
+    world.add(make_shared<sphere>(point3(0,-100.5,-1), 100));
+    world.add(make_shared<sphere>(point3(0,0,-1), 0.5));
 
     double viewport_height = 2.0;                                               // camera/viewport dimensions
     double viewport_width = viewport_height *                                   // NOTE; arbitrary value
@@ -79,7 +64,7 @@ int main(void) {
             auto ray_direction = pixel_center - camera_center;                  // calculate ray direction
             ray r = ray(camera_center, ray_direction);
 
-            color pixel_color = ray_color(r);                                   // calculate color of current pixel
+            color pixel_color = ray_color(r, world);                            // calculate color of current pixel
             write_color(std::cout, pixel_color);
         }
     }
