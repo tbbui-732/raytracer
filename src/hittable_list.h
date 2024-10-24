@@ -24,7 +24,7 @@ class hittable_list : public hittable {
             auto closest_so_far = ray_tmax;
 
             for (const auto& object : objects) {
-                if (object->hit(r, ray_tmin, ray_tmax, temp_rec)) {
+                if (object->hit(r, ray_tmin, closest_so_far, temp_rec)) {
                     hit_anything = true;
                     closest_so_far = temp_rec.t;
                     rec = temp_rec;

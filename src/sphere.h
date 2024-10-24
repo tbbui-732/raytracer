@@ -2,7 +2,6 @@
 #define SPHERE_H
 
 #include "hittable.h"
-#include <cmath>
 
 class sphere : public hittable {
     private:
@@ -10,17 +9,15 @@ class sphere : public hittable {
         double radius;
 
     public:
-        sphere(const point3& center, double radius) 
-            : center(center), radius(std::fmax(0, radius)) {}
+        sphere(const point3& center, double radius) : center(center), radius(std::fmax(0, radius)) {}
 
-        bool hit(const ray& r, double ray_tmin,
-                    double ray_tmax, hit_record& rec) const override {
-
+        bool hit(const ray& r, double ray_tmin, double ray_tmax, hit_record& rec) const override {
             // Simplified calculation for a circle.
             vec3 oc = center - r.origin(); // creates a vector from circle center to ray's origin.
             auto a = r.direction().length_squared();
             auto h = dot(r.direction(), oc);
             auto c = oc.length_squared() - radius*radius;
+
 
             // Discriminant determines if the ray hit the sphere.
             auto discriminant = h*h - a*c;

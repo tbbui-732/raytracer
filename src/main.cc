@@ -1,7 +1,7 @@
-#include "../include/rtweekend.h"
-#include "../include/hittable.h"
-#include "../include/hittable_list.h"
-#include "../include/sphere.h"
+#include "rtweekend.h"
+#include "hittable.h"
+#include "hittable_list.h"
+#include "sphere.h"
 
 color ray_color(const ray& r, const hittable& world) {                          // NOTE: creates an arbitrary blue to white gradient
     hit_record rec;
@@ -21,8 +21,8 @@ int main(void) {
     image_height = (image_height < 1) ? 1 : image_height;                       // ensure image_height is >= 1
 
     hittable_list world;                                                        // world
-    world.add(make_shared<sphere>(point3(0,-100.5,-1), 100));
     world.add(make_shared<sphere>(point3(0,0,-1), 0.5));
+    world.add(make_shared<sphere>(point3(0,-100.5,-1), 100));
 
     double viewport_height = 2.0;                                               // camera/viewport dimensions
     double viewport_width = viewport_height *                                   // NOTE; arbitrary value
