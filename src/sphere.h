@@ -11,7 +11,7 @@ class sphere : public hittable {
     public:
         sphere(const point3& center, double radius) : center(center), radius(std::fmax(0, radius)) {}
 
-        bool hit(const ray& r, double ray_tmin, double ray_tmax, hit_record& rec) const override {
+        bool hit(const ray& r, interval ray_t, hit_record& rec) const override {
             // Simplified calculation for a circle.
             vec3 oc = center - r.origin(); // creates a vector from circle center to ray's origin.
             auto a = r.direction().length_squared();
@@ -31,10 +31,10 @@ class sphere : public hittable {
             auto root = (h - sqrt_discriminant) / a;
 
             // Check if the root(s) are within the valid range.
-            if (root <= ray_tmin || ray_tmax <= root) {
+            if (!ray_t.surrounds(root)) {
                 // Recalculate second root if first root is invalid.
                 root = (h + sqrt_discriminant) / a;
-                if (root <= ray_tmin || ray_tmax <= root) {
+                if (!ray_t.surrounds(root)) {
                     // No hit if neither roots are valid.
                     return false;
                 }
