@@ -52,6 +52,14 @@ class vec3 {
         double length() const {
             return std::sqrt(length_squared());
         }
+
+        static vec3 random() {
+            return vec3(random_double(), random_double(), random_double());
+        }
+
+        static vec3 random(double min, double max) {
+            return vec3(random_double(min, max), random_double(min, max), random_double(min, max));
+        }
 };
 
 using point3 = vec3;
