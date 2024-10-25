@@ -3,6 +3,7 @@
 
 #include "hittable.h"
 #include "vec3.h"
+#include "material.h"
 
 class camera {
     private:
@@ -13,18 +14,20 @@ class camera {
         vec3   pixel_delta_v;  // Offset to pixel below
         double pixel_samples_scale;  // Color scale factor for a sum of pixel samples
 
-
         void initialize() {
+            // Set height of rendered image.
             image_height = int(image_width / aspect_ratio);
             image_height = (image_height < 1) ? 1 : image_height;
 
+            // Used to average the accumulated pixel color (anti-aliasing)
             pixel_samples_scale = 1.0 / samples_per_pixel;
 
+            // Where rays are casted from
             center = point3(0, 0, 0);
 
             // Determine viewport dimensions.
             auto focal_length = 1.0;
-            auto viewport_height = 2.0;
+            auto viewport_height = 2.0; // NOTE: arbitrary value
             auto viewport_width = viewport_height * (double(image_width)/image_height);
 
             // Calculate the vectors across the horizontal and down the vertical viewport edges.
@@ -36,8 +39,12 @@ class camera {
             pixel_delta_v = viewport_v / image_height;
 
             // Calculate the location of the upper left pixel.
-            auto viewport_upper_left =
-                center - vec3(0, 0, focal_length) - viewport_u/2 - viewport_v/2;
+            auto viewport_upper_left = center 
+                                     - vec3(0, 0, focal_length) // push viewport back
+                                     - viewport_u/2  // move all the way left
+                                     - viewport_v/2; // move all the way up
+
+            // Center of the top left pixel of the viewport
             pixel00_loc = viewport_upper_left + 0.5 * (pixel_delta_u + pixel_delta_v);
         }
 
@@ -47,9 +54,7 @@ class camera {
         }
 
         ray get_ray(int i, int j) const {
-            // Construct a camera ray originating from the origin and directed at randomly sampled
-            // point around the pixel location i, j.
-
+            // Get the point _around_ pixel(i, j)
             auto offset = sample_square();
             auto pixel_sample = pixel00_loc
                               + ((i + offset.x()) * pixel_delta_u)
@@ -67,11 +72,15 @@ class camera {
 
             hit_record rec;
 
-            if (world.hit(r, interval(0.001, infinity), rec)) {
-                vec3 direction = rec.normal + random_unit_vector();
-                return 0.5 * ray_color(ray(rec.p, direction), depth-1, world);
+            if (world.hit(r, interval(0.001, infinity), rec)) { // 0.001 reduces shadow acne; prevents ray hitting itself or backwards
+                ray scattered;
+                color attenuation;
+                if (rec.mat->scatter(r, rec, attenuation, scattered))
+                    return attenuation * ray_color(scattered, depth-1, world); // Successive scatters accumulate a new, blended color.
+                return color(0,0,0); // no hit
             }
 
+            // No object is hit. (Background color).
             vec3 unit_direction = unit_vector(r.direction());
             auto a = 0.5 * (unit_direction.y() + 1.0);
             return (1.0 - a) * color(1.0, 1.0, 1.0) + (a * color(0.5, 0.7, 1.0));
@@ -86,12 +95,16 @@ class camera {
         void render(const hittable& world) {
             initialize();
 
+            // header for ppm file format
             std::cout << "P3\n" << image_width << ' ' << image_height << "\n255\n";
 
+            // content of ppm file
+            // NOTE: image scans left to right, top to bottom
             for (int j = 0; j < image_height; j++) {
                 std::clog << "\rScanlines remaining: " << (image_height - j) << ' ' << std::flush;
                 for (int i = 0; i < image_width; i++) {
                     color pixel_color(0,0,0);
+                    // anti-aliasing
                     for (int sample = 0; sample < samples_per_pixel; sample++) {
                         ray r = get_ray(i, j);
                         pixel_color += ray_color(r, max_depth, world);
