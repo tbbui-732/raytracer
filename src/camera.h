@@ -27,7 +27,9 @@ class camera {
 
             // Determine viewport dimensions.
             auto focal_length = 1.0;
-            auto viewport_height = 2.0; // NOTE: arbitrary value
+            auto theta = degrees_to_radians(vfov);
+            auto h = std::tan(theta/2);
+            auto viewport_height = 2 * h * focal_length;
             auto viewport_width = viewport_height * (double(image_width)/image_height);
 
             // Calculate the vectors across the horizontal and down the vertical viewport edges.
@@ -91,6 +93,8 @@ class camera {
         int    image_width       = 100;  // Rendered image width in pixel count
         int    samples_per_pixel = 10;   // Count of random samples for each pixel
         int    max_depth         = 10;   // Max number of times a ray can bounce in a scene
+
+        double vfov = 90; // Vertifical fov
 
         void render(const hittable& world) {
             initialize();
