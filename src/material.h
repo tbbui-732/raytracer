@@ -44,6 +44,6 @@ class metal : public material {
             attenuation = albedo;
             return true;
         }
-}
+};
 
 #endif
