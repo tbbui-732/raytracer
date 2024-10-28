@@ -94,7 +94,10 @@ class camera {
         int    samples_per_pixel = 10;   // Count of random samples for each pixel
         int    max_depth         = 10;   // Max number of times a ray can bounce in a scene
 
-        double vfov = 90; // Vertifical fov
+        double vfov = 90;                   // Vertical fov
+        point3 lookfrom = point3(0, 0, 0);  // Camera origin
+        point3 lookat = point3(0, 0, -1);   // Camera point of where to look at
+        vec3 vup = vec3(0, 1, 0);           // Camera's relative up direction
 
         void render(const hittable& world) {
             initialize();
