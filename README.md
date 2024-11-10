@@ -13,15 +13,19 @@ Features:
 
 ## Rendered Images
 A sphere shaded by its normal vector, in all of its un-antialiased goodness.
+
 ![first sphere](https://github.com/tbbui-732/raytracer/blob/main/images_png/sphere-background.png)
 
 A glass sphere with an airbubble inside of it rendered with Schlick's approximation algorithm.
+
 ![glass sphere with schlick approximation](https://github.com/tbbui-732/raytracer/blob/main/images_png/schlick-spheres.png)
 
 The same spheres before but the camera is distanced away.
+
 ![positionable camera](https://github.com/tbbui-732/raytracer/blob/main/images_png/far-spheres.png)
 
 A bunch of spheres rendered everywhere. This one took 8-10 hours to render!
+
 ![final scene](https://github.com/tbbui-732/raytracer/blob/main/images_png/final-scene.png)
 
 ## Takeaways
