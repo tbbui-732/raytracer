@@ -1,7 +1,7 @@
 # Ray Tracer
 
 ## Description
-Implementation of a basic ray tracer technique to generate realistic images on the CPU (followed along from the text: ![Ray Tracing in One Weekend](https://raytracing.github.io/books/RayTracingInOneWeekend.html)).
+Implementation of a basic ray tracer technique to generate realistic images on the CPU (followed along from the text: [Ray Tracing in One Weekend](https://raytracing.github.io/books/RayTracingInOneWeekend.html)).
 Features:
    - Anti-aliasing
    - Different material types
